@@ -1,0 +1,17 @@
+<% @codenames.each do |dist| -%>
+Origin: <%= node[:reprepro][:fqdn] %>
+Label: apt repository
+Codename: <%= dist["codename"] %>
+Architectures: <%= @architectures.join(" ") %>
+Components: <%= @pulls["component"] %>
+UDebComponents: <%= @pulls["component"] %>
+Description: <%= node[:reprepro][:description] %>
+SignWith: <%= node[:reprepro][:pgp_email] %>
+Suite: <%= dist["suite"] %>
+<%   unless @pulls["name"] == dist -%>
+Pull: <%= dist["codename"] %>
+<%   end -%>
+
+
+<% end -%>
+

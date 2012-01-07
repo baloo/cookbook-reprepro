@@ -1,0 +1,20 @@
+
+### Dropped off by chef, any localchanges will be overwriten
+
+# Export TTY so that gpg can ask for passphrase
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Launch agent
+FILE="$HOME/.gpg-agent-info/`hostname`"
+if test -f "$FILE" &&
+   kill -0 "`cut -d: -f 2 $FILE`" 2>/dev/null; then
+     source $FILE
+else
+     mkdir -p $HOME/.gpg-agent-info/
+     gpg-agent --write-env-file $FILE --daemon
+     source $FILE
+fi
+export GPG_AGENT_INFO
+
+### Dropped off by chef, any localchanges will be overwriten

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ -f "${HOME}/.gpg-agent-info/`hostname`" ]; then
+  . "${HOME}/.gpg-agent-info/`hostname`"
+  export GPG_AGENT_INFO
+fi
+
+echo "/echo pong" | gpg-connect-agent -r /dev/stdin > /dev/null 2>&1
+if [ $? != 0 ]; then
+  echo "gpg-agent unavailable" >&2
+  exit 2
+fi
+
+for path in `cat /etc/reprepro-list.d/*`; do
+  for version in `grep Name $path/conf/incoming  |awk '{print $2}'`; do
+    reprepro -V -b $path processincoming $version
+  done
+  reprepro -b $path export
+done
+
+

@@ -1,0 +1,11 @@
+<% @codenames.each do |dist| -%>
+
+# <%= dist.inspect %>
+# <%= @incoming %>
+#
+Name: <%= dist["codename"] %>-inc
+IncomingDir: <%= @incoming %>/<%= dist["codename"] %>/
+TempDir: <%= @incoming %>/tmp
+Allow: <%= dist["suite"] %>><%= dist["codename"] %> <% dist["aliases"].each{|value| -%> <%= "#{value}>#{dist["codename"]}" %> <%} -%>
+<% end -%>
+

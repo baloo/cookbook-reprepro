@@ -1,0 +1,12 @@
+# <%= @codenames.inspect %>
+# <%= @architectures.inspect %>
+
+<% @codenames.each do |dist| -%>
+### <%= dist['codename'] %>
+
+wget -q -O - http://<%= @fqdn %>/<%= @pgp_email %> |apt-key add -
+echo -e "# <%= @desc %> - <%= dist['codename'] %>\ndeb http://<%= @fqdn %>/ <%= dist['codename'] %> <%= @pulls["component"] %>" | tee /etc/apt/sources.list.d/<%=@fqdn%>-<%=@id%>.list
+apt-get update
+
+
+<% end -%>
