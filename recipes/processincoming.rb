@@ -37,6 +37,7 @@ end
 
 cron "cron-process-incoming" do
   command "/usr/local/sbin/reprepro-incoming"
+  minute "*/2"
   mailto node[:reprepro][:cron_mail]
 end
 
