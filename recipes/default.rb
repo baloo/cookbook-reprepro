@@ -31,6 +31,7 @@ end
 
 apt_repos.each do |apt_repo_name|
   apt_repo = data_bag_item("reprepro", apt_repo_name)
+  Chef::Log.debug("loading reprepro #{apt_repo_name}")
 
   reprepro_repo apt_repo_name do
     repo apt_repo

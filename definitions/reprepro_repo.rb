@@ -23,8 +23,9 @@ define :reprepro_repo, :action => :enable do
   include_recipe "reprepro::processincoming"
   include_recipe "nginx"
 
-  apt_repo_name = params["name"]
-  apt_repo = params["repo"]
+
+  apt_repo_name = params[:name]
+  apt_repo = params[:repo]
   uploaders = apt_repo["uploaders"] || {}
 
   node.set_unless.reprepro[apt_repo_name] = Mash.new
@@ -123,7 +124,7 @@ define :reprepro_repo, :action => :enable do
     template "#{apt_repo["repo_dir"]}/conf/uploaders-#{key}" do
       source "uploaders.erb"
       owner "nobody"
-      owner "nogroup"
+      group "nogroup"
       variables(
         :distribution => key,
         :uploaders => value
