@@ -23,8 +23,9 @@ define :reprepro_repo, :action => :enable do
   include_recipe "reprepro::processincoming"
   include_recipe "nginx"
 
-  apt_repo_name = params[:name]
-  apt_repo = params[:repo]
+  apt_repo_name = params["name"]
+  apt_repo = params["repo"]
+  uploaders = apt_repo["uploaders"] || {}
 
   node.set_unless.reprepro[apt_repo_name] = Mash.new
   node.set_unless.reprepro[apt_repo_name].fqdn = apt_repo['fqdn']
@@ -45,14 +46,14 @@ define :reprepro_repo, :action => :enable do
     shell "/bin/sh"
     system true
   end
-  
+
   directory "#{apt_repo["repo_dir"]}" do
     owner "nobody"
     group "nogroup"
     mode "0755"
     recursive true
   end
-  
+
   directory "#{apt_repo["incoming"]}" do
     owner "reprepro-#{apt_repo["id"]}"
     group "nogroup"
@@ -112,7 +113,20 @@ define :reprepro_repo, :action => :enable do
         :codenames => apt_repo["codenames"],
         :architectures => apt_repo["architectures"],
         :incoming => apt_repo["incoming"],
-        :pulls => apt_repo["pulls"]
+        :pulls => apt_repo["pulls"],
+        :uploaders => uploaders
+      )
+    end
+  end
+
+  uploaders.each_pair do |key, value|
+    template "#{apt_repo["repo_dir"]}/conf/uploaders-#{key}" do
+      source "uploaders.erb"
+      owner "nobody"
+      owner "nogroup"
+      variables(
+        :distribution => key,
+        :uploaders => value
       )
     end
   end

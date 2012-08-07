@@ -1,0 +1,9 @@
+<% @uploaders.each_pair do |groupname, users| %>
+allow distribution '<%= @distribution %>' by group '<%= groupname %>'
+
+<% users.each do |user| %>
+group '<%= groupname %>' add '<%= user %>'
+<% end %>
+
+
+<% end %>
