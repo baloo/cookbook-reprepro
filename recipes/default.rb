@@ -21,7 +21,6 @@
 #
 
 include_recipe "nginx"
-include_recipe "proftpd"
 
 apt_repos = data_bag("reprepro")
 
