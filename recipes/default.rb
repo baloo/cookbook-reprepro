@@ -39,5 +39,5 @@ apt_repos.each do |apt_repo_name|
 end
 
 nginx_site "000-default" do
-  enable false
+  action :disable
 end
